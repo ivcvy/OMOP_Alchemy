@@ -9,6 +9,8 @@ from ...db import Base
 
 class Condition_Occurrence(Modifiable_Table):
     __tablename__ = 'condition_occurrence'
+    validators = {}
+
     # identifier
     condition_occurrence_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('modifiable_table.modifier_id'), primary_key=True, autoincrement=True)
     # temporal
@@ -46,6 +48,13 @@ class Condition_Occurrence(Modifiable_Table):
         'inherit_condition': (condition_occurrence_id == Modifiable_Table.modifier_id)
     }
 
+    @classmethod
+    def set_validators(cls):
+        # putting this here so that we can defer the import until after the models have all been instantiated, otherwise 
+        # it tries to query the concepts from non-existent tables - there may be a better way?
+        from ...conventions.vocab_lookups import tnm_lookup
+        cls.validators = {'tnm': tnm_lookup}
+
     @hybrid_property
     def condition_label(self):
         if self.condition_concept:
@@ -54,3 +63,35 @@ class Condition_Occurrence(Modifiable_Table):
     @condition_label.expression
     def _condition_label_expression(cls) -> sa.ColumnElement[Optional[str]]:
         return sa.cast("SQLColumnExpression[Optional[str]]", cls.condition_concept.concept_name)
+
+    # TODO: Down the line we should consider if all of these oncology-extension-specific properties need to be refactored out into a subclass?
+
+    def get_stage(self, concepts):
+        return sorted([m for m in self.modifiers if m.measurement_concept_id in concepts], key=lambda mod: mod.measurement_date)
+
+    @hybrid_property
+    def path_confirmation(self):
+        # returns true is any of the stage modifiers of this condition are of type pathological
+        if 'tnm' in self.validators:
+            return len(self.get_stage(self.validators['tnm'].path_stage_concepts)) > 0
+
+    @hybrid_property
+    def group_stage(self):
+        # returns group stage modifiers of this condition, ordered by modifier date (most recent last)
+        if 'tnm' in self.validators:
+            return self.get_stage(self.validators['tnm'].group_stage_concepts)
+    
+    @hybrid_property
+    def t_stage(self):
+        if 'tnm' in self.validators:
+            return self.get_stage(self.validators['tnm'].t_stage_concepts)
+            
+    @hybrid_property
+    def n_stage(self):
+        if 'tnm' in self.validators:
+            return self.get_stage(self.validators['tnm'].n_stage_concepts)
+
+    @hybrid_property
+    def m_stage(self):
+        if 'tnm' in self.validators:
+            return self.get_stage(self.validators['tnm'].m_stage_concepts)

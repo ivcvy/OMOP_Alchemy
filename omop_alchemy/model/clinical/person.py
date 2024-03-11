@@ -43,6 +43,7 @@ class Person(Base):#, Concept_Links):
     provider: so.Mapped[Optional['Provider']] = so.relationship(foreign_keys=[provider_id])
     care_site: so.Mapped[Optional['Care_Site']] = so.relationship(foreign_keys=[care_site_id])
     conditions: so.Mapped[List['Condition_Occurrence']] = so.relationship(back_populates="person", lazy="selectin")
+    observations: so.Mapped[List['Observation']] = so.relationship(back_populates="person", lazy="selectin")
     episodes: so.Mapped[List['Episode']] = so.relationship(back_populates="person_object", lazy="selectin")
     # concept_relationships
     gender: so.Mapped[Optional['Concept']] = so.relationship(foreign_keys=[gender_concept_id])

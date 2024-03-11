@@ -54,3 +54,40 @@ class ConditionModifiers(ConceptEnum):
 
 class TreatmentModifiers(ConceptEnum):
     ...
+
+
+class TStageConcepts(ConceptEnum):
+    # used to group tnm mappings into their relevant subtypes
+    # preferably create a concept that is the parent of all these T concepts, but for now...
+    t0 = 1634213
+    t1 = 1635564
+    t2 = 1635562
+    t3 = 1634376
+    t4 = 1634654
+    ta = 1635682
+    tx = 1635682
+    tis = 1635682
+
+class NStageConcepts(ConceptEnum):
+    # as above for n...
+    n0 = 1633440
+    n1 = 1634434
+    n2 = 1634119
+    n3 = 1635320
+    n4 = 1635445
+    nx = 1633885
+
+class MStageConcepts(ConceptEnum):
+    # and m...
+    m0 = 1635624
+    m1 = 1635142
+    mx = 1633547
+
+
+class GroupStageConcepts(ConceptEnum):
+    # there's a pattern here
+    stage0 = 1633754
+    stageI = 1633306
+    stageII = 1634209
+    stageIII = 1633650
+    stageIV = 1633650
