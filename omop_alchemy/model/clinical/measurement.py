@@ -3,6 +3,7 @@ from typing import Optional
 from decimal import Decimal
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...db import Base
 from ..concept_links import Concept_Links
@@ -40,3 +41,7 @@ class Measurement(Base, Concept_Links):
     modified_object: so.Mapped[Optional['Modifiable_Table']] = so.relationship(foreign_keys=[modifier_of_event_id])
 
 
+    @hybrid_property
+    def measurement_label(self):
+        if self.measurement_concept:
+            return self.measurement_concept.concept_code

@@ -181,7 +181,6 @@ gender_lookup = VocabLookup(domain="Gender")
 race_lookup = VocabLookup(domain="Race")
 ethnicity_lookup = VocabLookup(domain="Ethnicity")
 
-
 # class HierarchicalLookup():
 #     # this class holds an ordered list of standard vocabularies and 
 #     # will try match them in order of priority, restricted

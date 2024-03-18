@@ -18,6 +18,7 @@ class ModifierFields(ConceptEnum):
     condition_occurrence_id = 1147127
     drug_exposure_id = 1147707
     procedure_occurrence_id = 1147082
+    episode_id = 756290
 
 class ModifierTables(ConceptEnum):
     drug_exposure = 1147339
@@ -25,25 +26,33 @@ class ModifierTables(ConceptEnum):
     observation = 1147304
 
 class TreatmentEpisode(ConceptEnum):
-    care_plan_assignment = 4207655  # SNOMED - Prescription of therapeutic regimen
-    ehr_prescription = 32838        # EHR prescription
-    ehr_planned_dispensing = 32837  # EHR planned dispensation
-    ehr_encounter_record = 32827    # EHR encounter
+    treatment_regimen = 32531         # Assignment to or derivation of chemo treatment regimen   
+    treatment_cycle = 32532           # Assignment to or derivation of chemo treatment cycle
+    cancer_surgery = 32939            # Surgical treatment episode
+    radiotherapy = 32940              # Radiotherapy treatment episode
     
 class Modality(ConceptEnum):
     chemotherapy = 35803401
     radiotherapy = 35803411
     
-class EpisodeConcepts(ConceptEnum):   
+class DiseaseEpisodeConcepts(ConceptEnum):   
     episode_of_care = 32533           # Overarching disease episode
-    treatment_regimen = 32531         # Assignment to or derivation of treatment regimen   
-    treatment_cycle = 32532           # Assignment to or derivation of treatment cycle
-    disease_first_occurrence = 32528  # Initial diagnosis
-    disease_progression = 32677       # Diagnosis that is linked to another primary
+
+    confined = 32528                  # Confined disease extent
+    invasive = 32677                  # Invasive disease extent
+    metastatic = 32944                # Invasive disease extent
+
+    stable_disease = 32948            # Stable disease dynamic
+    disease_progression = 32949       # Progression disease dynamic
+    partial_response = 32947          # Partial response disease dynamic
+    complete_response = 32947         # Complete response disease dynamic
 
 class EpisodeTypes(ConceptEnum):
     ehr_defined = 32544               # Episode defined in EHR
     ehr_derived = 32545               # Episode derived algorithmically from EHR
+    ehr_prescription = 32838          # EHR prescription
+    ehr_planned_dispensing = 32837    # EHR planned dispensation
+    ehr_encounter_record = 32827      # EHR encounter
     
 class ConditionModifiers(ConceptEnum):
     # for measurement_concept_id grouping
@@ -82,7 +91,6 @@ class MStageConcepts(ConceptEnum):
     m0 = 1635624
     m1 = 1635142
     mx = 1633547
-
 
 class GroupStageConcepts(ConceptEnum):
     # there's a pattern here
